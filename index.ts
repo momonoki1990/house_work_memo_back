@@ -11,6 +11,9 @@ app.use((req: express.Request, res: express.Response, next) => {
   next();
 })
 
+// ポートの設定
+app.set('port', (process.env.PORT || 5000));
+
 // ルーティング
 const router: express.Router = express.Router();
 router.get('/', (req: express.Request, res: express.Response) => {
@@ -19,4 +22,6 @@ router.get('/', (req: express.Request, res: express.Response) => {
 app.use(router);
 
 // 待ち受け
-app.listen(5000, () => { console.log('server start, listening on port 5000'); });
+app.listen(app.get('port'), () => {
+  console.log("Node app is running at port:" + app.get('port'))
+});;
