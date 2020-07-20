@@ -14,7 +14,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc:ver": "tsc --version",
     "tsc": "tsc",
-    "ts-node": "ts-node"
+    "ts-node": "ts-node",
+    "start": "ts-node index"
   },
   "keywords": [],
   "author": "",
