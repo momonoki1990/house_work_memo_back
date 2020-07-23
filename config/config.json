@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "myuser",
+    "password": null,
+    "database": "house_work_memo_dev",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "myuser",
+    "password": null,
+    "database": "house_work_memo_tst",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "house_work_memo__prd",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}

@@ -1,4 +1,6 @@
 import express from 'express';
+import { Model } from 'sequelize';
+import db from './models/index';
 
 const app: express.Express = express();
 
@@ -9,13 +11,23 @@ app.use((req: express.Request, res: express.Response, next) => {
   next();
 })
 
+// body-parser関連
+app.use(express.json());
+app.use(express.urlencoded());
+
+// クエリ関数
+async function workAll(res: express.Response) {
+  const works = await db.Work.findAll().catch((err: Error) => console.error(err));
+  res.json(works);
+}
+
 // ポートの設定
 app.set('port', (process.env.PORT || 5000));
 
 // ルーティング
 const router: express.Router = express.Router();
 router.get('/', (req: express.Request, res: express.Response) => {
-  res.json('hello world !!!');
+  workAll(res);
 });
 app.use(router);
 
