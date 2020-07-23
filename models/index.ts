@@ -7,7 +7,9 @@ const config = require(__dirname + '/../../config/config.json')[env];
 const db: { [index: string]: Sequelize | any } = {};
 
 // sequelizeインスタンス作成(DBとの接続)
-let sequelize: Sequelize = new Sequelize(config.database, config.usename, config.password, config);
+let sequelize: Sequelize = process.env.DATABASE_URL ?
+  new Sequelize(process.env.DATABASE_URL)
+  : new Sequelize(config.database, config.usename, config.password, config);
 
 // modelsディレクトリ内のモデルファイルをdbにまとめる
 fs
