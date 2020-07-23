@@ -27,7 +27,9 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../../config/config.json')[env];
 const db = {};
 // sequelizeインスタンス作成(DBとの接続)
-let sequelize = new sequelize_1.Sequelize(config.database, config.usename, config.password, config);
+let sequelize = process.env.DATABASE_URL ?
+    new sequelize_1.Sequelize(process.env.DATABASE_URL)
+    : new sequelize_1.Sequelize(config.database, config.usename, config.password, config);
 // modelsディレクトリ内のモデルファイルをdbにまとめる
 fs
     .readdirSync(__dirname)
