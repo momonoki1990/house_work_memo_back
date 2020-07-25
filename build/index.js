@@ -8,7 +8,7 @@ const index_1 = __importDefault(require("./models/index"));
 const app = express_1.default();
 // CORS許可
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", process.env.NODE_ENV === 'production' ? "https://sample-react-ts-app.herokuapp.com" : "http://localhost:3000");
+    res.header("Access-Control-Allow-Origin", process.env.NODE_ENV === 'production' ? "https://house-work-memo-front.herokuapp.com" : "http://localhost:3000");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-with, Content-TypeError, Accept");
     next();
 });
