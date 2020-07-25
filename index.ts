@@ -21,14 +21,25 @@ async function workAll(res: express.Response) {
   res.json(works);
 }
 
+async function worksByCreatedAtDesc(res: express.Response) {
+  const works = await db.Work.findAll({order: [['createdAt', 'DESC']]}).catch((err: Error) => console.error(err));
+  res.json(works);
+}
+
 // ポートの設定
 app.set('port', (process.env.PORT || 5000));
 
 // ルーティング
 const router: express.Router = express.Router();
+
 router.get('/', (req: express.Request, res: express.Response) => {
   workAll(res);
 });
+
+router.get('/home', (req: express.Request, res: express.Response) => {
+  worksByCreatedAtDesc(res);
+})
+
 app.use(router);
 
 // 待ち受け
