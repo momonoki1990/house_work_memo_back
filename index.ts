@@ -6,7 +6,7 @@ const app: express.Express = express();
 
 // CORS許可
 app.use((req: express.Request, res: express.Response, next) => {
-  res.header("Access-Control-Allow-Origin", process.env.NODE_ENV === 'production' ? "https://sample-react-ts-app.herokuapp.com" : "http://localhost:3000");
+  res.header("Access-Control-Allow-Origin", process.env.NODE_ENV === 'production' ? "https://house-work-memo-front.herokuapp.com" : "http://localhost:3000");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-with, Content-TypeError, Accept");
   next();
 })
