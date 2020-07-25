@@ -20,12 +20,19 @@ async function workAll(res) {
     const works = await index_1.default.Work.findAll().catch((err) => console.error(err));
     res.json(works);
 }
+async function worksByCreatedAtDesc(res) {
+    const works = await index_1.default.Work.findAll({ order: [['createdAt', 'DESC']] }).catch((err) => console.error(err));
+    res.json(works);
+}
 // ポートの設定
 app.set('port', (process.env.PORT || 5000));
 // ルーティング
 const router = express_1.default.Router();
 router.get('/', (req, res) => {
     workAll(res);
+});
+router.get('/home', (req, res) => {
+    worksByCreatedAtDesc(res);
 });
 app.use(router);
 // 待ち受け
