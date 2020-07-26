@@ -1,6 +1,6 @@
 import express from 'express';
-import { Model } from 'sequelize';
 import db from './models/index';
+import HomeController from './controllers/home_controller';
 
 const app: express.Express = express();
 
@@ -15,30 +15,13 @@ app.use((req: express.Request, res: express.Response, next) => {
 app.use(express.json());
 app.use(express.urlencoded());
 
-// クエリ関数
-async function workAll(res: express.Response) {
-  const works = await db.Work.findAll().catch((err: Error) => console.error(err));
-  res.json(works);
-}
-
-async function worksByCreatedAtDesc(res: express.Response) {
-  const works = await db.Work.findAll({order: [['createdAt', 'DESC']]}).catch((err: Error) => console.error(err));
-  res.json(works);
-}
-
 // ポートの設定
 app.set('port', (process.env.PORT || 5000));
 
 // ルーティング
 const router: express.Router = express.Router();
 
-router.get('/', (req: express.Request, res: express.Response) => {
-  workAll(res);
-});
-
-router.get('/home', (req: express.Request, res: express.Response) => {
-  worksByCreatedAtDesc(res);
-})
+router.get('/home', HomeController.index);
 
 app.use(router);
 
