@@ -1,7 +1,7 @@
 import express from 'express';
 import db from './models/index';
 import HomeController from './controllers/home_controller';
-
+import MonthlyController from './controllers/monthly_controller';
 const app: express.Express = express();
 
 // CORS許可
@@ -22,6 +22,8 @@ app.set('port', (process.env.PORT || 5000));
 const router: express.Router = express.Router();
 
 router.get('/home', HomeController.index);
+
+router.get('/monthly', MonthlyController.index);
 
 app.use(router);
 

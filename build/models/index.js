@@ -39,8 +39,6 @@ fs
     .forEach(file => {
     const model = require(path.join(__dirname, file));
     db[model.name] = model.initialize(sequelize);
-    console.log(model.name);
-    console.log(model);
 });
 // アソシエーションを設定
 Object.keys(db).forEach(modelName => {
