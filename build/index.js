@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const home_controller_1 = __importDefault(require("./controllers/home_controller"));
+const monthly_controller_1 = __importDefault(require("./controllers/monthly_controller"));
 const app = express_1.default();
 // CORS許可
 app.use((req, res, next) => {
@@ -20,6 +21,7 @@ app.set('port', (process.env.PORT || 5000));
 // ルーティング
 const router = express_1.default.Router();
 router.get('/home', home_controller_1.default.index);
+router.get('/monthly', monthly_controller_1.default.index);
 app.use(router);
 // 待ち受け
 app.listen(app.get('port'), () => {
