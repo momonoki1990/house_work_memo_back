@@ -2,6 +2,7 @@ import express from 'express';
 import db from './models/index';
 import HomeController from './controllers/home_controller';
 import MonthlyController from './controllers/monthly_controller';
+import DailyController from './controllers/daily_controller';
 const app: express.Express = express();
 
 // CORS許可
@@ -24,6 +25,8 @@ const router: express.Router = express.Router();
 router.get('/home', HomeController.index);
 
 router.get('/monthly', MonthlyController.index);
+
+router.get('/daily', DailyController.index);
 
 app.use(router);
 

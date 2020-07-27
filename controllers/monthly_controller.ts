@@ -1,20 +1,17 @@
 import express from 'express';
 import { Op } from 'sequelize';
-import { startOfMonth, lastDayOfMonth, addDays } from 'date-fns';
 import db from '../models/index';
+import { calcEndOfThisAndLastMonth } from '../helpers/controller_helper';
 
 class MonthlyController {
 
   // クエリ関数
-  public static async hoursPerCategory(req: express.Request, res: express.Response) {
-    let startDate: any = req.query.month;
-    // 前月末日に変換(DB問い合わせの条件指定で一日繰り上げになる為)
-    startDate = startOfMonth(new Date(startDate));
-    let endDate: any = req.query.month;
-    // 当月末日に変換
-    endDate = lastDayOfMonth(new Date(endDate));
-    console.log(startDate, endDate);
-  
+  protected static async hoursPerCategory(req: express.Request, res: express.Response) {
+
+    // クエリパラメータから日付(month)を取得して、前月末日と当月末日を算出
+    let [startDate, endDate] = calcEndOfThisAndLastMonth(req);
+
+
     const hours_per_category: Array<object> = [];
     const categories = await db.Category.count()
       .catch((err: Error) => console.error(err));
@@ -32,7 +29,7 @@ class MonthlyController {
           const category_rate = Math.round((category_sum / total_hours) * 100);
           hours_per_category.push({
             'id': category_id,
-            'category_name': category_name,
+            'name': category_name,
             'hours': category_sum,
             'rate': category_rate
           });
@@ -43,7 +40,7 @@ class MonthlyController {
     
     hours_per_category.push({
       'id': category_id,
-      'category_name': '合計',
+      'name': '合計',
       'hours': total_hours,
       'rate': 100
     });
