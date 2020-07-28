@@ -8,7 +8,9 @@ const app: express.Express = express();
 // CORS許可
 app.use((req: express.Request, res: express.Response, next) => {
   res.header("Access-Control-Allow-Origin", process.env.NODE_ENV === 'production' ? "https://house-work-memo-front.herokuapp.com" : "http://localhost:3000");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-with, Content-TypeError, Accept");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-with, Content-TypeError, Accept, Content-Type");
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+  //res.header('Content-Type', 'application/json, charset=utf-8')
   next();
 })
 
@@ -23,6 +25,8 @@ app.set('port', (process.env.PORT || 5000));
 const router: express.Router = express.Router();
 
 router.get('/home', HomeController.index);
+
+router.post('/home', HomeController.create);
 
 router.get('/monthly', MonthlyController.index);
 
