@@ -11,7 +11,9 @@ const app = express_1.default();
 // CORS許可
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", process.env.NODE_ENV === 'production' ? "https://house-work-memo-front.herokuapp.com" : "http://localhost:3000");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-with, Content-TypeError, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-with, Content-TypeError, Accept, Content-Type");
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    //res.header('Content-Type', 'application/json, charset=utf-8')
     next();
 });
 // body-parser関連
@@ -22,6 +24,7 @@ app.set('port', (process.env.PORT || 5000));
 // ルーティング
 const router = express_1.default.Router();
 router.get('/home', home_controller_1.default.index);
+router.post('/home', home_controller_1.default.create);
 router.get('/monthly', monthly_controller_1.default.index);
 router.get('/daily', daily_controller_1.default.index);
 app.use(router);
