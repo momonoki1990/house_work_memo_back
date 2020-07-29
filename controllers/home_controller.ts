@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import db from '../models/index';
 import { format } from 'date-fns';
 
@@ -6,8 +6,8 @@ class HomeController {
 
   // クエリ関数
 
-  // works取得(作成日降順)
-  protected static async getWorksByIdAtDesc() {
+  // works取得(ID降順)
+  protected static async getWorksInDescOfId() {
     const works = await db.Work.findAll({ order: [['id', 'DESC']], include: db.Category })
       .catch((err: Error) => console.error(err));
     return works;
@@ -32,10 +32,11 @@ class HomeController {
       .catch((err: Error) => console.error(err));
   }
 
+  
   // コントローラーアクション
 
   public static async index(req: Request, res: Response) {
-    const works = await HomeController.getWorksByIdAtDesc();
+    const works = await HomeController.getWorksInDescOfId();
     const categories = await HomeController.getCategories();
     const result = [works, categories];
     res.json(result);
@@ -44,14 +45,14 @@ class HomeController {
   public static async create(req: Request, res: Response) {
     const data = req.body;
     await HomeController.createWork(data);
-    const new_works = await HomeController.getWorksByIdAtDesc();
+    const new_works = await HomeController.getWorksInDescOfId();
     res.json(new_works);
   }
 
   public static async delete(req: Request, res: Response) {
     const id = req.query.id;
     await HomeController.deleteWork(id);
-    const new_works = await HomeController.getWorksByIdAtDesc();
+    const new_works = await HomeController.getWorksInDescOfId();
     res.json(new_works);
   };
 };

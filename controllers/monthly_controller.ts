@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { Op } from 'sequelize';
 import db from '../models/index';
 import { calcEndOfThisAndLastMonth } from '../helpers/controller_helper';
@@ -6,28 +6,37 @@ import { calcEndOfThisAndLastMonth } from '../helpers/controller_helper';
 class MonthlyController {
 
   // クエリ関数
-  protected static async getHoursPerCategory(req: Request, res: express.Response) {
+
+  protected static async getHoursPerCategory(req: Request, res: Response) {
 
     // クエリパラメータから日付(month)を取得して、前月末日と当月末日を算出
     let [startDate, endDate] = calcEndOfThisAndLastMonth(req);
 
+    // 結果を格納する空配列を用意
     const hours_per_category: Array<object> = [];
+
+    // カテゴリーの数
     const categories = await db.Category.count()
       .catch((err: Error) => console.error(err));
+    
+    // Category.nameを配列(category_names_ary)に格納する。
     const category_names = JSON.stringify(await db.Category.findAll({ attributes: ['name'] })
       .catch((err: Error) => console.error(err)));
     const category_names_ary = JSON.parse(category_names);
+
+    // 合計作業時間を計算
     const total_hours = await db.Work.sum('done_hours', { where: { done_date: { [Op.between]: [startDate, endDate] } } })
       .catch((err: Error) => console.error(err));
     
+    // month月のカテゴリー別の合計作業時間を取得
     let category_id = 1;
     for (let i = 1; i <= categories; i++) {
-      // month月のカテゴリー別の合計作業時間を取得
       await db.Work.sum('done_hours', { where: { done_date: { [Op.between]: [startDate, endDate] }, CategoryId: i } })
         .then((category_sum: number) => {
           const category_name = category_names_ary[category_id - 1].name;
           const category_rate = Math.round((category_sum / total_hours) * 100) || 0;
-          // 配列に格納
+          
+          // 作業時間をidやカテゴリー名・割合と共に配列に格納
           hours_per_category.push({
             'id': category_id,
             'name': category_name,
@@ -48,9 +57,11 @@ class MonthlyController {
     });
     res.json(hours_per_category);
   }
+
   
   // コントローラーアクション
-  public static index(req: Request, res: express.Response) {
+  
+  public static index(req: Request, res: Response) {
     MonthlyController.getHoursPerCategory(req, res);
   };
 };

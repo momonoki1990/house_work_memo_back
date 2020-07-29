@@ -1,5 +1,4 @@
 import express from 'express';
-import db from './models/index';
 import HomeController from './controllers/home_controller';
 import MonthlyController from './controllers/monthly_controller';
 import DailyController from './controllers/daily_controller';
@@ -10,7 +9,6 @@ app.use((req: express.Request, res: express.Response, next) => {
   res.header("Access-Control-Allow-Origin", process.env.NODE_ENV === 'production' ? "https://house-work-memo-front.herokuapp.com" : "http://localhost:3000");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-with, Content-TypeError, Accept, Content-Type");
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, DELETE')
-  //res.header('Content-Type', 'application/json, charset=utf-8')
   next();
 })
 
