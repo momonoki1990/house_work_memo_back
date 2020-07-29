@@ -9,7 +9,7 @@ const app: express.Express = express();
 app.use((req: express.Request, res: express.Response, next) => {
   res.header("Access-Control-Allow-Origin", process.env.NODE_ENV === 'production' ? "https://house-work-memo-front.herokuapp.com" : "http://localhost:3000");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-with, Content-TypeError, Accept, Content-Type");
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, DELETE')
   //res.header('Content-Type', 'application/json, charset=utf-8')
   next();
 })
@@ -28,9 +28,13 @@ router.get('/home', HomeController.index);
 
 router.post('/home', HomeController.create);
 
+//router.delete('/home', HomeController.delete);
+
 router.get('/monthly', MonthlyController.index);
 
 router.get('/daily', DailyController.index);
+
+router.delete('/daily', DailyController.delete);
 
 app.use(router);
 

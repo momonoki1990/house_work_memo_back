@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { Op } from 'sequelize';
 import db from '../models/index';
 import { calcEndOfThisAndLastMonth } from '../helpers/controller_helper';
@@ -6,8 +6,9 @@ import { calcEndOfThisAndLastMonth } from '../helpers/controller_helper';
 class DailyController {
 
   // クエリ関数
-  protected static async getWorksOfMonthByCreatedAtDesc(req: express.Request, res: express.Response) {
-    
+
+  // works取得(done_date降順→id昇順)
+  protected static async getWorksOfMonthByDoneDateAtDesc(req: Request, res: Response) {
     // クエリパラメータから日付(month)を取得して、前月末日と当月末日を算出
     let [startDate, endDate] = calcEndOfThisAndLastMonth(req);
 
@@ -16,10 +17,26 @@ class DailyController {
     res.json(works);
   }
 
+  // work削除
+  protected static async deleteWork(id: any) {
+    await db.Work.destroy({ where: { id: id } })
+      .catch((err: Error) => console.error(err));
+  }
+
+
   // コントローラーアクション
-  public static index(req: express.Request, res: express.Response) {
+
+  public static index(req: Request, res: Response) {
     console.log('DailyController#index')
-    DailyController.getWorksOfMonthByCreatedAtDesc(req, res);
+    DailyController.getWorksOfMonthByDoneDateAtDesc(req, res);
+  };
+
+  public static async delete(req: Request, res: Response) {
+    const id = req.query.id;
+    console.log(id);
+    await DailyController.deleteWork(id);
+    const new_works = await DailyController.getWorksOfMonthByDoneDateAtDesc(req, res);
+    res.json(new_works);
   };
 };
 
