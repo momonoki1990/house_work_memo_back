@@ -28,7 +28,7 @@ router.get('/home', HomeController.index);
 
 router.post('/home', HomeController.create);
 
-//router.delete('/home', HomeController.delete);
+router.delete('/home', HomeController.delete);
 
 router.get('/monthly', MonthlyController.index);
 

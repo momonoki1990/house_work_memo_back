@@ -33,7 +33,6 @@ class DailyController {
 
   public static async delete(req: Request, res: Response) {
     const id = req.query.id;
-    console.log(id);
     await DailyController.deleteWork(id);
     const new_works = await DailyController.getWorksOfMonthByDoneDateAtDesc(req, res);
     res.json(new_works);
