@@ -25,7 +25,7 @@ app.set('port', (process.env.PORT || 5000));
 const router = express_1.default.Router();
 router.get('/home', home_controller_1.default.index);
 router.post('/home', home_controller_1.default.create);
-//router.delete('/home', HomeController.delete);
+router.delete('/home', home_controller_1.default.delete);
 router.get('/monthly', monthly_controller_1.default.index);
 router.get('/daily', daily_controller_1.default.index);
 router.delete('/daily', daily_controller_1.default.delete);

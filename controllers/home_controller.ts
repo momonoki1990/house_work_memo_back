@@ -7,7 +7,7 @@ class HomeController {
   // クエリ関数
 
   // works取得(作成日降順)
-  protected static async getWorksOfMonthByIdAtDesc() {
+  protected static async getWorksByIdAtDesc() {
     const works = await db.Work.findAll({ order: [['id', 'DESC']], include: db.Category })
       .catch((err: Error) => console.error(err));
     return works;
@@ -26,10 +26,16 @@ class HomeController {
       .catch((err: Error) => console.error(err));
   }
 
+  // work削除
+  protected static async deleteWork(id: any) {
+    await db.Work.destroy({ where: { id: id } })
+      .catch((err: Error) => console.error(err));
+  }
+
   // コントローラーアクション
 
   public static async index(req: Request, res: Response) {
-    const works = await HomeController.getWorksOfMonthByIdAtDesc();
+    const works = await HomeController.getWorksByIdAtDesc();
     const categories = await HomeController.getCategories();
     const result = [works, categories];
     res.json(result);
@@ -38,16 +44,16 @@ class HomeController {
   public static async create(req: Request, res: Response) {
     const data = req.body;
     await HomeController.createWork(data);
-    const new_works = await HomeController.getWorksOfMonthByIdAtDesc();
+    const new_works = await HomeController.getWorksByIdAtDesc();
     res.json(new_works);
   }
 
-  /*public static async delete(req: Request, res: Response) {
+  public static async delete(req: Request, res: Response) {
     const id = req.query.id;
-    console.log(id);
-    const works = await HomeController.getWorksOfMonthByIdAtDesc();
-    res.json(works);
-  }*/
+    await HomeController.deleteWork(id);
+    const new_works = await HomeController.getWorksByIdAtDesc();
+    res.json(new_works);
+  };
 };
 
 export default HomeController;
