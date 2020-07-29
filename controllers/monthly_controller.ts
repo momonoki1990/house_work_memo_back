@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { Op } from 'sequelize';
 import db from '../models/index';
 import { calcEndOfThisAndLastMonth } from '../helpers/controller_helper';
@@ -6,7 +6,7 @@ import { calcEndOfThisAndLastMonth } from '../helpers/controller_helper';
 class MonthlyController {
 
   // クエリ関数
-  protected static async getHoursPerCategory(req: express.Request, res: express.Response) {
+  protected static async getHoursPerCategory(req: Request, res: express.Response) {
 
     // クエリパラメータから日付(month)を取得して、前月末日と当月末日を算出
     let [startDate, endDate] = calcEndOfThisAndLastMonth(req);
@@ -50,7 +50,7 @@ class MonthlyController {
   }
   
   // コントローラーアクション
-  public static index(req: express.Request, res: express.Response) {
+  public static index(req: Request, res: express.Response) {
     MonthlyController.getHoursPerCategory(req, res);
   };
 };
