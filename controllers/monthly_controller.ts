@@ -26,7 +26,7 @@ class MonthlyController {
       await db.Work.sum('done_hours', { where: { done_date: { [Op.between]: [startDate, endDate] }, CategoryId: i } })
         .then((category_sum: number) => {
           const category_name = category_names_ary[category_id - 1].name;
-          const category_rate = Math.round((category_sum / total_hours) * 100);
+          const category_rate = Math.round((category_sum / total_hours) * 100) || 0;
           // 配列に格納
           hours_per_category.push({
             'id': category_id,
