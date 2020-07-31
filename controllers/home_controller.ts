@@ -8,7 +8,7 @@ class HomeController {
 
   // works取得(ID降順)
   protected static async getWorksInDescOfId() {
-    const works = await db.Work.findAll({ order: [['id', 'DESC']], include: db.Category })
+    const works = await db.Work.findAll({ order: [['id', 'DESC']], include: db.Category, limit: 10 })
       .catch((err: Error) => console.error(err));
     return works;
   }

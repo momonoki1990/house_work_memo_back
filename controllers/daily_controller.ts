@@ -13,12 +13,13 @@ class DailyController {
     // クエリパラメータから日付(month)を取得して、前月末日と当月末日を算出
     let [startDate, endDate] = calcEndOfThisAndLastMonth(req);
 
-    const works = await db.Work.findAll({ order: [['done_date', 'DESC']], where: { done_date: { [Op.between]: [startDate, endDate] } }, include: db.Category })
+    const works = await db.Work.findAll({ order: [['done_date', 'DESC'], ['id']], where: { done_date: { [Op.between]: [startDate, endDate] } }, include: db.Category })
       .catch((err: Error) => console.error(err));
     
     res.json(works);
   }
 
+  
   // work削除
   protected static async deleteWork(id: any) {
     await db.Work.destroy({ where: { id: id } })
@@ -29,9 +30,9 @@ class DailyController {
   // コントローラーアクション
 
   public static index(req: Request, res: Response) {
-    console.log('DailyController#index')
     DailyController.getWorksOfMonthInDescOfDoneDate(req, res);
   };
+
 
   public static async delete(req: Request, res: Response) {
     const id = req.query.id;
