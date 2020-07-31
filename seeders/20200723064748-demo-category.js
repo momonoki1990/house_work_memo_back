@@ -11,7 +11,7 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
-      name: '買い物',
+      name: '買物',
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
@@ -22,7 +22,11 @@ module.exports = {
       name: '洗濯',
       createdAt: new Date(),
       updatedAt: new Date()
-    }], {});
+    }, {
+      name: '未分類',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    } ], {});
   },
 
   down: async (queryInterface, Sequelize) => {
